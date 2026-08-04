@@ -13,6 +13,7 @@ public static class ServiceCollectionExtension
     {
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IUserGateway, UserGateaway>();
+        services.AddTransient<IAddressRepository,AddressRepository>();
         return services;
     }
 }

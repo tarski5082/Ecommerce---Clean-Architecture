@@ -8,10 +8,11 @@ namespace Infrastructure.Gateways;
 public  class UserGateaway : IUserGateway
 {
     private readonly IUserRepository _userRepository;
-
-    public UserGateaway(IUserRepository userRepository)
+    private readonly IAddressRepository _addressRepository;
+    public UserGateaway(IUserRepository userRepository,IAddressRepository addressRepository)
     {
         _userRepository = userRepository;
+        _addressRepository=addressRepository;
     }
 
     
@@ -40,13 +41,13 @@ public  class UserGateaway : IUserGateway
         });
     }
 
-        public string? GetUserPasswordHash(string username) 
+    public string? GetUserPasswordHash(string username) 
         {
             var user = _userRepository.GetUserByUsername(username);
             return user?.PasswordHash;
         }
 
-        public Core.Models.User? GetUserByUsername(string username)
+    public Core.Models.User? GetUserByUsername(string username)
     {
         var infraUser = _userRepository.GetUserByUsername(username);
         if (infraUser == null) return null;
@@ -58,5 +59,23 @@ public  class UserGateaway : IUserGateway
             Nom = infraUser.Nom,
             Prenom=infraUser.Prenom
         };
+    }
+
+    public void addBillingAddress(string username,Address address)
+    {
+        var user = _userRepository.GetUserByUsername(username);
+        var _address = _addressRepository.addBillingAdress(address);
+        user.IdFacturation = _address;
+        _userRepository.UpdateUser(user);
+
+    }
+
+    public void addDeliveryAddress(string username,Address address)
+    {
+        var user = _userRepository.GetUserByUsername(username);
+        var _address = _addressRepository.addBillingAdress(address);
+        user.IdLivraison = _address;
+        _userRepository.UpdateUser(user);
+
     }
 }

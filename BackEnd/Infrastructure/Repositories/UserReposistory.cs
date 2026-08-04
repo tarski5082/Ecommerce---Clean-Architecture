@@ -39,4 +39,25 @@ public class UserRepository(IConfiguration configuration) : IUserRepository
         using var connection = CreateConnection();
         return connection.Query<User>(sql);
     }
+
+    public bool UpdateUser(User user)
+    {
+        const string sql = @"
+            UPDATE User
+            SET Id = @Id,
+                Username= @Username,
+                Nom = @Nom,
+                Prenom = @Prenom,
+                IdFacturation=@IdFacturation,
+                IdLivraison=@IdLivraison
+            WHERE Id = @Id;
+            ";
+        using (var connection = CreateConnection())
+        {
+            connection.Open();
+            int affectedRaw = connection.Execute(sql,user);
+            return affectedRaw>0;
+        }
+        
+    }
 }
