@@ -8,10 +8,10 @@ public interface IAddressRepository
     Address? GetBillingAddress(int id);
     Address? GetDeliveryAddress(int id);
 
-    bool UpdateBillingAddress(int id);
-    bool UpdateDeliveryAddress(int id);
+    bool UpdateBillingAddress(Address address);
+    bool UpdateDeliveryAddress(Address address);
 
-    void DeleteBillingAddress(int id);
-    void DeleteDeliveryAddress(int id);
+    bool DeleteBillingAddress(int id);
+    bool DeleteDeliveryAddress(int id);
 
 }

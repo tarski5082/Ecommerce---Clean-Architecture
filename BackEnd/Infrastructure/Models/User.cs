@@ -8,4 +8,7 @@ public class User
     public bool IsAdmin{get;set;}
     public string Nom{get;set;}=string.Empty;
     public string Prenom{get;set;}=string.Empty;
+
+    public int IdFacturation{get;set;}
+    public int IdLivraison{get;set;}
 }

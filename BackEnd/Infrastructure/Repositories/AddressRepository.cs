@@ -103,7 +103,7 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
         {
             connection.Open();
             int affectedRaw = connection.Execute(
-                "DELETE FROM Stock WHERE id = @id", new {id = id}
+                "DELETE FROM AdresseFacturation WHERE id = @id", new {id = id}
             );
             return affectedRaw>0;
         }
@@ -114,7 +114,7 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
         {
             connection.Open();
             int affectedRaw = connection.Execute(
-                "DELETE FROM Stock WHERE id = @id", new {id = id}
+                "DELETE FROM AdresseLivraison WHERE id = @id", new {id = id}
             );
             return affectedRaw>0;
         }
