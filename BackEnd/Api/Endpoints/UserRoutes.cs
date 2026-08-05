@@ -80,13 +80,24 @@ public static class UserRoutes
             userUseCases.Register(request);
             return Results.Ok(new { message = "User registered successfully" });
         })
-        .AllowAnonymous()
         .WithName("Register")
         .Produces<object>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status401Unauthorized)
         .Produces(StatusCodes.Status500InternalServerError);
 
+        group.MapPost("/update",(HttpContext httpContext,[FromBody]Address address,IUserUseCases userUseCases)=>
+        {
+            var username = httpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(username))
+            {
+                return Results.Unauthorized();
+            }
+            userUseCases.addBillingAdress(username,address);
+            return Results.Ok("Addresse ajoutee");
+        });
+        
+       
         return app;
     }
 }
