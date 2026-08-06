@@ -14,11 +14,11 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
                             ?? throw new ArgumentNullException(nameof(configuration), "Database connection string 'DefaultConnection' not found.");
 
     private IDbConnection CreateConnection() => new MySqlConnection(_connectionString);
-    public int addBillingAdress(Address adress)
+    public int AddAdress(Address adress)
     {
         const string sql = @"
-            INSERT INTO AdresseFacturation (Rue, Numero, Boite, id_localite)
-            VALUES (@Rue, @Numero, @Boite, @IdLocalite);
+            INSERT INTO Adresse (Rue, Numero, Boite)
+            VALUES (@Rue, @Numero, @Boite);
 
             SELECT LAST_INSERT_ID();
             ";
@@ -29,47 +29,25 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
             return connection.QuerySingle<int>(sql,adress);
         }
     }
-    public int addDeliveryAdress(Address adress)
-    {
-         const string sql = @"
-            INSERT INTO AdresseLivraison(Rue, Numero, Boite, id_localite)
-            VALUES (@Rue, @Numero, @Boite, @IdLocalite);
+    
 
-            SELECT LAST_INSERT_ID();
-            ";
-
-            using(var connection = CreateConnection())
-        {
-            connection.Open();
-            return connection.QuerySingle<int>(sql,adress);
-        }
-    }
-
-    public Address? GetBillingAddress(int id)
+    public Address? GetAddress(int id)
     {
         using(var connection = CreateConnection())
         {
             connection.Open();
-            return connection.QuerySingleOrDefault<Address>("SELECT * FROM AdresseFacturation WHERE id=@id",new {id=id});
-        }
-    }
-    public Address? GetDeliveryAddress(int id)
-    {
-        using(var connection = CreateConnection())
-        {
-            connection.Open();
-            return connection.QuerySingleOrDefault<Address>("SELECT * FROM AdresseLivraison WHERE id=@id",new {id=id});
+            return connection.QuerySingleOrDefault<Address>("SELECT * FROM Adresse WHERE Id=@Id",new {Id=id});
         }
     }
 
-    public bool UpdateBillingAddress(Address address)
+    public bool UpdateAddress(Address address)
     {
         const string sql = @"
-            UPDATE AdresseFacturation
+            UPDATE Adresse
             SET Rue = @Rue,
                 Numero = @Numero,
                 Boite = @Boite,
-                id_localite = @IdLocalite
+                IdLocalite = @IdLocalite
             WHERE Id = @Id;
             ";
         using (var connection = CreateConnection())
@@ -79,45 +57,19 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
             return affectedRaw>0;
         }
     }
-    public bool UpdateDeliveryAddress(Address address)
-    {
-        const string sql = @"
-            UPDATE AdresseLivraison
-            SET Rue = @Rue,
-                Numero = @Numero,
-                Boite = @Boite,
-                id_localite = @IdLocalite
-            WHERE Id = @Id;
-            ";
-        using (var connection = CreateConnection())
-        {
-            connection.Open();
-            int affectedRaw = connection.Execute(sql,address);
-            return affectedRaw>0;
-        }
-    }
+    
 
-    public bool DeleteBillingAddress(int id)
+    public bool DeleteAddress(int id)
     {
         using(var connection = CreateConnection())
         {
             connection.Open();
             int affectedRaw = connection.Execute(
-                "DELETE FROM AdresseFacturation WHERE id = @id", new {id = id}
+                "DELETE FROM Adresse WHERE id = @id", new {id = id}
             );
             return affectedRaw>0;
         }
     }
-    public bool DeleteDeliveryAddress(int id)
-    {
-        using(var connection = CreateConnection())
-        {
-            connection.Open();
-            int affectedRaw = connection.Execute(
-                "DELETE FROM AdresseLivraison WHERE id = @id", new {id = id}
-            );
-            return affectedRaw>0;
-        }
-    }
+   
 
 }

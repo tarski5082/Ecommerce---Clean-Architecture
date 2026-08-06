@@ -1,12 +1,9 @@
-namespace Infrastructure.Models;
-
-
+namespace Core.Models;
 public class Address
 {
     public int Id { get; set; }
     public string Rue { get; set; } = "";
     public int Numero { get; set; }
     public string? Boite { get; set; }
-    public required Locality Localite {get; set;}
+    public int IdLocalite { get; set; }
 }
-

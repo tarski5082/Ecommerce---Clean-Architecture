@@ -1,33 +1,27 @@
+
+DROP DATABASE store;
 CREATE DATABASE IF NOT EXISTS store;
 USE store;
 
 
 
 CREATE TABLE Localite(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    codePostal INT,
-    ville VARCHAR(50),
-    province VARCHAR(50)
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    CodePostal INT,
+    Ville VARCHAR(50),
+    Province VARCHAR(50)
 );
 
 
-CREATE TABLE AdresseFacturation(
-    id INT PRIMARY KEY AUTO_INCREMENT, 
+CREATE TABLE Adresse(
+    Id INT PRIMARY KEY AUTO_INCREMENT, 
     rue VARCHAR(70),
     numero INT,
     boite VARCHAR(5),
-    id_localite INT,
-    FOREIGN KEY (id_localite) REFERENCES Localite(id)
+    IdLocalite INT DEFAULT NULL,
+    FOREIGN KEY (Idlocalite) REFERENCES Localite(id)
 );
 
-CREATE TABLE AdresseLivraison(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    rue VARCHAR(70),
-    numero INT,
-    boite VARCHAR(5),
-    id_localite INT,
-    FOREIGN KEY (id_localite) REFERENCES Localite(id)
-);
 
 
 CREATE TABLE IF NOT EXISTS Users (
@@ -41,6 +35,6 @@ CREATE TABLE IF NOT EXISTS Users (
     IdLivraison INT,
     CreatedAt DATETIME(6) DEFAULT (UTC_TIMESTAMP()),
     UpdatedAt DATETIME(6) DEFAULT (UTC_TIMESTAMP()) ON UPDATE CURRENT_TIMESTAMP(6),
-    
-
+    FOREIGN KEY(IdFacturation) REFERENCES Adresse(Id),
+    FOREIGN KEY(IdLivraison) REFERENCES Adresse(Id)
 );

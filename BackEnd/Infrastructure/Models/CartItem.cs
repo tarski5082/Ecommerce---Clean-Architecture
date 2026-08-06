@@ -1,6 +1,7 @@
 namespace Infrastructure.Models;
 public class CartItem
 {
-    public required Product product;
-    public int quantity;
+    public Guid Id{get;set;}
+    public required Product product{get;set;}
+    public uint quantity{get;set;}
 }

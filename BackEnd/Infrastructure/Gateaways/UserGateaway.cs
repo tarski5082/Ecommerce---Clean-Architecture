@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Reflection.Metadata.Ecma335;
 using Core.IGateways;
 using Infrastructure.Models;
 using Infrastructure.Repositories.Abstractions;
@@ -15,7 +16,17 @@ public  class UserGateaway : IUserGateway
         _addressRepository=addressRepository;
     }
 
-    
+    public Address convertToAddressInfrastructure(Core.Models.Address address)
+    {
+        return new Address
+        {
+            Id = address.Id,
+            Rue = address.Rue,
+            Numero=address.Numero,
+            Boite=address.Boite,
+            IdLocalite=address.IdLocalite
+        };
+    }
 
     public void AddUser(String username,string passwordHash)
     {
@@ -61,21 +72,29 @@ public  class UserGateaway : IUserGateway
         };
     }
 
-    public void addBillingAddress(string username,Address address)
+    public void UpdateBillingAddress(string username,Core.Models.Address address)
     {
         var user = _userRepository.GetUserByUsername(username);
-        var _address = _addressRepository.addBillingAdress(address);
+        var _address = _addressRepository.addBillingAdress(convertToAddressInfrastructure(address));
         user.IdFacturation = _address;
         _userRepository.UpdateUser(user);
 
     }
 
-    public void addDeliveryAddress(string username,Address address)
+    public void UpdateDeliveryAddress(string username,Core.Models.Address address)
     {
         var user = _userRepository.GetUserByUsername(username);
-        var _address = _addressRepository.addBillingAdress(address);
+        var _address = _addressRepository.addBillingAdress(convertToAddressInfrastructure(address));
         user.IdLivraison = _address;
         _userRepository.UpdateUser(user);
 
     }
+
+    public void addBillingAdress(string username, Core.Models.Address address)
+    {
+        var _address = convertToAddressInfrastructure(address);
+        _addressRepository.addBillingAdress(_address);
+    }
+
+    
 }

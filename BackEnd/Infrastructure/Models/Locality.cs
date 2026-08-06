@@ -1,6 +1,6 @@
 namespace Infrastructure.Models;
 
-public class Localite
+public class Locality
 {
     public int Id { get; set; }
     public int CodePostal { get; set; }

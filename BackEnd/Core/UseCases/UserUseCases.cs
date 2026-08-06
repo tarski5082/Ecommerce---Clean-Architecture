@@ -61,4 +61,9 @@ public class UserUseCases : IUserUseCases
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
         _userGateway.AddUser(request.Username, hashedPassword);
     }
+
+    public void addBillingAdress(string username,Address address)
+    {
+        _userGateway.addBillingAdress(username,address);
+    }
 }

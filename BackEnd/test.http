@@ -1,0 +1,16 @@
+@baseUrl = http://localhost:5144
+@authToken = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGF0YSIsIm5hbWVpZCI6IjZmOWU3ZDE4LTkwYzItMTFmMS04NDYxLTAwZjQ4ZDU5OTMyNSIsIm5iZiI6MTc4NTkzMDAzMywiZXhwIjoxNzg1OTMwMzMzLCJpYXQiOjE3ODU5MzAwMzMsImlzcyI6Im15LWFwaSIsImF1ZCI6Im15LWFwcCJ9.2umlMaH_5BIWKn5nzGQgz9xLDg9d14uajliFWqRLSfPNX7Hh3mlAR_pSlQS0TL9FiUEmeKoyERVq4x-DKJ2Hpw
+
+### Update User Billing Address
+POST {{baseUrl}}/user/update
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "rue": "Lison",
+  "numero": 27,
+  "boite": "null",
+  "idLocalite": 1
+}
+
