@@ -14,7 +14,7 @@ public class LocalityRepository(IConfiguration configuration):ILocalityRepositor
                             ?? throw new ArgumentNullException(nameof(configuration), "Database connection string 'DefaultConnection' not found.");
     
     public IDbConnection CreateConnections()=>new MySqlConnection(_connectionString);
-    public int addLocality(Locality locality)
+    public int AddLocality(Locality locality)
     {
         const string sql = @"INSERT INTO Localite (CodePostal,Ville,Province) 
         VALUES (@CodePostal,@Ville,@Province);

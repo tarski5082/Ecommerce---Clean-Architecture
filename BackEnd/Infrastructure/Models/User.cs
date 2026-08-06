@@ -9,6 +9,8 @@ public class User
     public string Nom{get;set;}=string.Empty;
     public string Prenom{get;set;}=string.Empty;
 
-    public Address Facturation{get;set;}
-    public Address Livraison{get;set;}
+    public int? IdFacturation{get;set;}
+    public int? IdLivraison{get;set;}
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
