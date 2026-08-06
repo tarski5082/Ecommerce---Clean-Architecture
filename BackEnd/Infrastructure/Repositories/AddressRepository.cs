@@ -46,8 +46,7 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
             UPDATE Adresse
             SET Rue = @Rue,
                 Numero = @Numero,
-                Boite = @Boite,
-                IdLocalite = @IdLocalite
+                Boite = @Boite
             WHERE Id = @Id;
             ";
         using (var connection = CreateConnection())
@@ -69,6 +68,16 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
             );
             return affectedRaw>0;
         }
+    }
+
+    public bool AddressExist(Address address)
+    {
+        return false;
+    }
+
+    public int GetAddressId(Address address)
+    {
+        return 1;
     }
    
 

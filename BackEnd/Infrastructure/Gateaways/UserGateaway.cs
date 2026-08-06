@@ -16,7 +16,17 @@ public  class UserGateaway : IUserGateway
         _addressRepository=addressRepository;
     }
 
-    public Address convertToAddressInfrastructure(Core.Models.Address address)
+    public Locality convert(Core.Models.Locality locality)
+    {
+        return new Locality
+        {
+            Id = locality.Id,
+            CodePostal = locality.CodePostal,
+            Ville = locality.Ville,
+            Province = locality.Province,
+        };
+    }
+    public Address convert(Core.Models.Address address)
     {
         return new Address
         {
@@ -24,7 +34,7 @@ public  class UserGateaway : IUserGateway
             Rue = address.Rue,
             Numero=address.Numero,
             Boite=address.Boite,
-            IdLocalite=address.IdLocalite
+            IdLocalite=address.Localite.Id
         };
     }
 
@@ -75,25 +85,29 @@ public  class UserGateaway : IUserGateway
     public void UpdateBillingAddress(string username,Core.Models.Address address)
     {
         var user = _userRepository.GetUserByUsername(username);
-        var _address = _addressRepository.addBillingAdress(convertToAddressInfrastructure(address));
-        user.IdFacturation = _address;
-        _userRepository.UpdateUser(user);
+        if(user!=null)
+        {
+            user.IdFacturation = address.Id;
+            _userRepository.UpdateUser(user);
+        }
 
     }
 
     public void UpdateDeliveryAddress(string username,Core.Models.Address address)
     {
         var user = _userRepository.GetUserByUsername(username);
-        var _address = _addressRepository.addBillingAdress(convertToAddressInfrastructure(address));
-        user.IdLivraison = _address;
-        _userRepository.UpdateUser(user);
+        if(user!=null)
+        {
+            user.IdLivraison=address.Id;
+            _userRepository.UpdateUser(user);
+        }
 
     }
 
     public void addBillingAdress(string username, Core.Models.Address address)
     {
-        var _address = convertToAddressInfrastructure(address);
-        _addressRepository.addBillingAdress(_address);
+        var _address = convert(address);
+        _addressRepository.AddAdress(_address);
     }
 
     

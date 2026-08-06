@@ -5,5 +5,5 @@ public class Address
     public string Rue { get; set; } = "";
     public int Numero { get; set; }
     public string? Boite { get; set; }
-    public int IdLocalite { get; set; }
+    public Locality Localite { get; set; }
 }

@@ -3,9 +3,9 @@ using Infrastructure.Models;
 
 public interface ILocalityRepository
 {
-    int addLocality(Locality locality);
-
-    Locality? GetLocalityById(int id);
+    int GetLocalityId(Locality locality);
+    int AddLocality(Locality locality);
+    Locality? GetLocality(int id);
     bool LocalityExist(Locality locality);
     bool UpdateLocality(Locality locality);
     bool DeleteLocality(int id);

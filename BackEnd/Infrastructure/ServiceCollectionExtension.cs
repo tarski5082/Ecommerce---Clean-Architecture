@@ -14,6 +14,7 @@ public static class ServiceCollectionExtension
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IUserGateway, UserGateaway>();
         services.AddTransient<IAddressRepository,AddressRepository>();
+        services.AddTransient<ILocalityRepository,LocalityRepository>();
         return services;
     }
 }
