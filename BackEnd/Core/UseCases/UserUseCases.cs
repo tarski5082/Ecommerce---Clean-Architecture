@@ -62,8 +62,5 @@ public class UserUseCases : IUserUseCases
         _userGateway.AddUser(request.Username, hashedPassword);
     }
 
-    public void addBillingAdress(string username,Address address)
-    {
-        _userGateway.addBillingAdress(username,address);
-    }
+    
 }

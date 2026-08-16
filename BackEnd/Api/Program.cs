@@ -9,9 +9,9 @@ using Api.EndPoints;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
-
-builder.Services.AddCoreServices();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddCoreServices();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -41,25 +41,26 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost",
-        policy =>
-        {
-            policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200", "https://localhost:4200") // Exact Angular origin
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+              // Add .AllowCredentials() here if sending cookies or withCredentials in HTTP requests
+    });
 });
 
 
 
 
 var app = builder.Build();
+app.UseCors("AllowAngularApp");
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
-    app.UseCors("AllowLocalhost");
+    
 }
 
 app.UseHttpsRedirection();
@@ -68,5 +69,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.AddUserRoutes();
-
+app.AddProfileRoutes();
+app.AddProductRoutes();
+app.AddCartRoutes();
 app.Run();

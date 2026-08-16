@@ -8,5 +8,4 @@ public interface IUserUseCases
     void Register(RegisterRequest request);
     IEnumerable<User> GetAllUsers();
 
-    void addBillingAdress(string username,Address address);
 }

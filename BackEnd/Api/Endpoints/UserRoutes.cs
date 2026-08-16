@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Core.Models;
+using Core.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Core.UseCases.Abstractions;
@@ -86,16 +87,7 @@ public static class UserRoutes
         .Produces(StatusCodes.Status401Unauthorized)
         .Produces(StatusCodes.Status500InternalServerError);
 
-        group.MapPost("/update",(ClaimsPrincipal user,[FromBody]Address address,IUserUseCases userUseCases)=>
-        {
-           var username = user.FindFirstValue(ClaimTypes.Name) ?? user.FindFirst("name")?.Value;
-            if (string.IsNullOrEmpty(username))
-            {
-                return Results.Unauthorized();
-            }
-            userUseCases.addBillingAdress(username,address);
-            return Results.Ok("Addresse ajoutee");
-        });
+        
         
        
         return app;

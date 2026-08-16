@@ -4,7 +4,9 @@ namespace Core.IGateways;
 public interface IAddressGateaway
 {
 
-    Address? GetAddress(int id);
-    int AddAdress(Address address);
+    Address? GetAddressById(int id);
+    int? GetAddressId(Address address);
+    int AddAdress(Address address); 
+    bool UpdateAddress(Address address);
 
 }
