@@ -2,16 +2,16 @@ namespace Infrastructure.Gateways;
 using Infrastructure.Repositories;
 using Infrastructure.Models;
 using Core.IGateways;
+using Infrastructure.Repositories.Abstractions;
 public class AddressGateaway:IAddressGateaway
 {
-    private readonly AddressRepository _addressRepository;
-    private readonly LocalityRepository localityRepository;
+    private readonly IAddressRepository _addressRepository;
 
-    public AddressGateaway(AddressRepository addressRepository)
+    public AddressGateaway(IAddressRepository addressRepository)
     {
         _addressRepository=addressRepository;
     }
-     public void UpdateAddress(Core.Models.Address address)
+     public bool UpdateAddress(Core.Models.Address address)
     {
        var _address = new Address
        {
@@ -21,9 +21,20 @@ public class AddressGateaway:IAddressGateaway
            Boite=address.Boite,
            IdLocalite=address.Localite.Id
        };
-       _addressRepository.UpdateAddress(_address);
+       return _addressRepository.UpdateAddress(_address);
     }
-
+    public Core.Models.Address? GetAddressById(int id)
+    {
+        var address = _addressRepository.GetAddressById(id);
+        if(address is null) return null;
+        return new Core.Models.Address
+        {
+            Id=id,
+            Rue = address.Rue,
+            Numero = address.Numero,
+            Boite = address.Boite
+        };
+    }
    
 
     public int AddAdress(Core.Models.Address address)
@@ -41,8 +52,8 @@ public class AddressGateaway:IAddressGateaway
     }
     public Core.Models.Address? GetAddress(int id)
     {
-        var _address = _addressRepository.GetAddress(id);
-        
+        var _address = _addressRepository.GetAddressById(id);
+        if (_address is null) return null;
         return new Core.Models.Address
         {
             Id = _address.Id,
@@ -50,6 +61,18 @@ public class AddressGateaway:IAddressGateaway
             Numero = _address.Numero,
             Boite = _address.Boite
         };
+    }
+
+    public int? GetAddressId(Core.Models.Address address)
+    {
+        var _address = new Address
+        {
+            Rue=address.Rue,
+            Numero=address.Numero,
+            Boite=address.Boite,
+            IdLocalite=address.Localite.Id
+        };
+        return _addressRepository.GetAddressId(_address);
     }
     
 }

@@ -20,29 +20,59 @@ public class LocalityRepository(IConfiguration configuration):ILocalityRepositor
         VALUES (@CodePostal,@Ville,@Province);
         SELECT LAST_INSERT_ID();
         ";
-        using (var connection = CreateConnections()){
+        
+        
+            using(var connection = CreateConnections())
+            {
+                connection.Open();
+                return connection.QuerySingle<int>(sql,locality);
+            }
+        
+        
+    }
+
+    public int? GetLocalityId(Locality locality)
+    {
+        const string sql = @"SELECT Id FROM Localite WHERE 
+                            CodePostal=@CodePostal AND
+                            Ville=@Ville AND
+                            Province=@Province;";
+        using (var connection = CreateConnections())
+        {
             connection.Open();
-            return connection.QuerySingle<int>(sql,locality);
+            return connection.QuerySingleOrDefault<int>(sql, new
+            {
+                CodePostal = locality.CodePostal,
+                Ville = locality.Ville,
+                Province = locality.Province
+            });       
         }
     }
 
-    public Locality GetLocalityById(int id)
+    public Locality? GetLocalityById(int id)
     {
         using (var connection = CreateConnections())
         {
             connection.Open();
-            connection.QuerySingleOrDefault<Locality>("SELECT * FROM Localite WHERE Id=@Id;",new {Id=id});
+            return connection.QuerySingleOrDefault<Locality>("SELECT * FROM Localite WHERE Id=@Id;",new {Id=id});
         }
 
-        return new Locality();
+        
     }
     public bool UpdateLocality(Locality locality)
     {
-        return true;
+        const string sql = @"UPDATE Localite SET
+                            CodePostal=@CodePostal,
+                            Ville=@Ville,
+                            Province=@Province
+                            WHERE Id=@Id";
+        using(var connection = CreateConnections())
+        {
+            connection.Open();
+            int affectedRaw = connection.Execute(sql,locality);
+            return affectedRaw>0;
+        }
     }
 
-    public bool DeleteLocality(int id)
-    {
-        return true;
-    }
+    
 }

@@ -15,13 +15,13 @@ public class UserRepository(IConfiguration configuration) : IUserRepository
     private IDbConnection CreateConnection() => new MySqlConnection(_connectionString);
     public User? GetUserByUsername(string username)
     {
-        const string sql = "SELECT Id, Username, PasswordHash, IsAdmin, Nom, Prenom FROM Users WHERE Username = @Username;";
+        const string sql = "SELECT Id, Username, PasswordHash, IsAdmin, Nom, Prenom FROM Utilisateur WHERE Username = @Username;";
         using var connection = CreateConnection();
         return connection.QuerySingleOrDefault<User?>(sql, new { Username = username });
     }
     public void AddUser(User user)
     {
-        string sql = @"INSERT INTO Users (Username,PasswordHash,IsAdmin,Nom,Prenom) VALUES (@Username,@PasswordHash,@IsAdmin,@Nom,@Prenom)";
+        string sql = @"INSERT INTO Utilisateur (Username,PasswordHash,IsAdmin,Nom,Prenom) VALUES (@Username,@PasswordHash,@IsAdmin,@Nom,@Prenom)";
         
         using var connection = CreateConnection();
         connection.Execute(sql,new {user.Username,user.PasswordHash,user.IsAdmin,user.Nom,user.Prenom});
@@ -34,7 +34,7 @@ public class UserRepository(IConfiguration configuration) : IUserRepository
                    PasswordHash,
                    Nom,
                    Prenom
-            FROM Users;
+            FROM Utilisateur;
             """;
         using var connection = CreateConnection();
         return connection.Query<User>(sql);
@@ -43,7 +43,7 @@ public class UserRepository(IConfiguration configuration) : IUserRepository
     public bool UpdateUser(User user)
     {
         const string sql = @"
-            UPDATE User
+            UPDATE Utilisateur
             SET Id = @Id,
                 Username= @Username,
                 Nom = @Nom,

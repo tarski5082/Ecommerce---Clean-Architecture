@@ -3,10 +3,10 @@ using Infrastructure.Models;
 
 public interface ILocalityRepository
 {
-    int GetLocalityId(Locality locality);
+    
     int AddLocality(Locality locality);
-    Locality? GetLocality(int id);
-    bool LocalityExist(Locality locality);
+    int? GetLocalityId(Locality locality);
+    Locality? GetLocalityById(int id);
     bool UpdateLocality(Locality locality);
-    bool DeleteLocality(int id);
+    
 }

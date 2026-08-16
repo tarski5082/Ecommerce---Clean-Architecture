@@ -31,7 +31,7 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
     }
     
 
-    public Address? GetAddress(int id)
+    public Address? GetAddressById(int id)
     {
         using(var connection = CreateConnection())
         {
@@ -58,27 +58,25 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
     }
     
 
-    public bool DeleteAddress(int id)
+    
+    public int? GetAddressId(Address address)
     {
+        const string sql = @"SELECT Id FROM Adresse
+                            WHERE Rue=@Rue
+                            AND Numero=@Numero
+                            AND (
+                                Boite = @Boite
+                                OR (Boite IS NULL AND @Boite IS NULL)
+                            )
+                            AND IdLocalite=@IdLocalite;";
         using(var connection = CreateConnection())
         {
             connection.Open();
-            int affectedRaw = connection.Execute(
-                "DELETE FROM Adresse WHERE id = @id", new {id = id}
-            );
-            return affectedRaw>0;
+            return connection.QueryFirstOrDefault<int?>(sql,address);
         }
     }
 
-    public bool AddressExist(Address address)
-    {
-        return false;
-    }
-
-    public int GetAddressId(Address address)
-    {
-        return 1;
-    }
+    
    
 
 }

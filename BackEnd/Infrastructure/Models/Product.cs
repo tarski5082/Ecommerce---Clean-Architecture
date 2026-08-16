@@ -2,13 +2,10 @@ namespace Infrastructure.Models;
 
 public class Product
 {
-    public Guid Id { get; set; }
-    public required string Name { get; set; }
-    public Category category{get;set;}
-    public string? Description { get; set; }
-    public decimal Price { get; set; }
-    public uint Inventory { get; set; }=0;
+    public int Id { get; set; }
+    public string? Nom { get; set; } 
+    public int Inventaire { get; set; }
+    public decimal PrixUnitaire {get; set;}
     public string? ImageUrl { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public int? IdCategorie { get; set; }
 }

@@ -1,17 +1,53 @@
 namespace Infrastructure.Gateways;
-using Infrastructure.Repositories;
+using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Models;
-public class LocalityGateaway
+using Core.IGateways;
+public class LocalityGateaway:ILocalityGateaway
 {
-    private readonly LocalityRepository _localityRepository;
+    private readonly ILocalityRepository _localityRepository;
 
-    public LocalityGateaway(LocalityRepository localityRepository)
+    public LocalityGateaway(ILocalityRepository localityRepository)
     {
         _localityRepository=localityRepository;
     }
 
-    public int AddLocality(Locality localite)
+    public int? AddLocality(Core.Models.Locality localite)
     {
-        return _localityRepository.AddLocality(localite);
+        return _localityRepository.AddLocality(new Locality
+        {
+            CodePostal=localite.CodePostal,
+            Ville=localite.Ville,
+            Province=localite.Province
+        });
+    }
+
+    public Core.Models.Locality GetLocalityById (int id)
+    {
+        var localite = _localityRepository.GetLocalityById(id);
+        return new Core.Models.Locality
+        {
+            CodePostal=localite.CodePostal,
+            Ville=localite.Ville,
+            Province=localite.Province
+        };
+    }
+    public int? GetLocalityId(Core.Models.Locality localite)
+    {
+        return _localityRepository.GetLocalityId(new Locality
+        {
+            CodePostal=localite.CodePostal,
+            Ville=localite.Ville,
+            Province=localite.Province
+        });
+    }
+
+    public bool UpdateLocality(Core.Models.Locality localite)
+    {
+        return _localityRepository.UpdateLocality(new Locality
+        {
+            CodePostal=localite.CodePostal,
+            Ville=localite.Ville,
+            Province=localite.Province
+        });
     }
 }

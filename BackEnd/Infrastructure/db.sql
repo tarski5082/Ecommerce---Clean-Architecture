@@ -1,30 +1,70 @@
-
-DROP DATABASE store;
 CREATE DATABASE IF NOT EXISTS store;
 USE store;
 
+-- =====================================================
+-- Suppression des tables
+-- =====================================================
 
+DROP TABLE IF EXISTS Article;
+DROP TABLE IF EXISTS Panier;
+DROP TABLE IF EXISTS Utilisateur;
+DROP TABLE IF EXISTS Produit;
+DROP TABLE IF EXISTS Adresse;
+DROP TABLE IF EXISTS Categorie;
+DROP TABLE IF EXISTS Localite;
 
-CREATE TABLE Localite(
+-- =====================================================
+-- Localite
+-- =====================================================
+
+CREATE TABLE Localite (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     CodePostal INT,
     Ville VARCHAR(50),
     Province VARCHAR(50)
 );
 
+-- =====================================================
+-- Categorie
+-- =====================================================
 
-CREATE TABLE Adresse(
-    Id INT PRIMARY KEY AUTO_INCREMENT, 
-    rue VARCHAR(70),
-    numero INT,
-    boite VARCHAR(5),
-    IdLocalite INT DEFAULT NULL,
-    FOREIGN KEY (Idlocalite) REFERENCES Localite(id)
+CREATE TABLE Categorie (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nom VARCHAR(80)
 );
 
+-- =====================================================
+-- Adresse
+-- =====================================================
 
+CREATE TABLE Adresse (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Rue VARCHAR(70),
+    Numero INT,
+    Boite VARCHAR(5),
+    IdLocalite INT,
+    FOREIGN KEY (IdLocalite) REFERENCES Localite(Id)
+);
 
-CREATE TABLE IF NOT EXISTS Users (
+-- =====================================================
+-- Produit
+-- =====================================================
+
+CREATE TABLE Produit (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nom VARCHAR(250),
+    Inventaire INT UNSIGNED NOT NULL,
+    PrixUnitaire DECIMAL(10,2),
+    ImageUrl VARCHAR(2048),
+    IdCategorie INT,
+    FOREIGN KEY (IdCategorie) REFERENCES Categorie(Id)
+);
+
+-- =====================================================
+-- Utilisateur
+-- =====================================================
+
+CREATE TABLE Utilisateur (
     Id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     Username VARCHAR(256) NOT NULL UNIQUE,
     PasswordHash TEXT NOT NULL,
@@ -34,7 +74,117 @@ CREATE TABLE IF NOT EXISTS Users (
     IdFacturation INT DEFAULT NULL,
     IdLivraison INT DEFAULT NULL,
     CreatedAt DATETIME(6) DEFAULT (UTC_TIMESTAMP()),
-    UpdatedAt DATETIME(6) DEFAULT (UTC_TIMESTAMP()) ON UPDATE CURRENT_TIMESTAMP(6),
-    FOREIGN KEY(IdFacturation) REFERENCES Adresse(Id),
-    FOREIGN KEY(IdLivraison) REFERENCES Adresse(Id)
+    UpdatedAt DATETIME(6) DEFAULT (UTC_TIMESTAMP())
+        ON UPDATE CURRENT_TIMESTAMP(6),
+
+    FOREIGN KEY (IdFacturation) REFERENCES Adresse(Id),
+    FOREIGN KEY (IdLivraison) REFERENCES Adresse(Id)
 );
+
+-- =====================================================
+-- Panier
+-- =====================================================
+
+CREATE TABLE Panier (
+    Id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    UserId CHAR(36),
+    Etat ENUM('en attente', 'effectue')
+        NOT NULL DEFAULT 'en attente',
+    Livraison ENUM(
+        'en attente',
+        'confirme',
+        'en preparation',
+        'expedie',
+        'livree'
+    ) NOT NULL DEFAULT 'en attente',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (UserId)
+        REFERENCES Utilisateur(Id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- Article
+-- =====================================================
+
+CREATE TABLE Article (
+    Id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    ProduitId INT NOT NULL,
+    Quantite INT UNSIGNED NOT NULL,
+    PanierId CHAR(36) NOT NULL,
+
+    FOREIGN KEY (ProduitId)
+        REFERENCES Produit(Id),
+
+    FOREIGN KEY (PanierId)
+        REFERENCES Panier(Id)
+        ON DELETE CASCADE
+);
+
+-- =====================================================
+-- Données : Categories
+-- =====================================================
+
+INSERT INTO Categorie (Id, Nom) VALUES
+(1, 'Informatique'),
+(2, 'Téléphones'),
+(3, 'Audio'),
+(4, 'Gaming'),
+(5, 'Accessoires');
+
+-- =====================================================
+-- Données : Produits
+-- =====================================================
+
+INSERT INTO Produit
+    (Id, Nom, Inventaire, PrixUnitaire, ImageUrl, IdCategorie)
+VALUES
+(1, 'Ordinateur portable Lenovo IdeaPad 5', 25, 750,
+ 'https://example.com/lenovo-ideapad.jpg', 1),
+
+(2, 'MacBook Air M3', 15, 1300,
+ 'https://example.com/macbook-air-m3.jpg', 1),
+
+(3, 'Écran Samsung 27 pouces', 30, 250,
+ 'https://example.com/samsung-monitor.jpg', 1),
+
+(4, 'Clavier mécanique Logitech G413', 40, 90,
+ 'https://example.com/logitech-g413.jpg', 5),
+
+(5, 'Souris Logitech G502', 50, 80,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/4e/2a/30/19933774/1505-1/tsp20260601032040/Souris-Gaming-Sans-Fil-Logitech-G502-X-Lightspeed-pour-PC-ou-Mac-Noir.jpg', 5),
+
+(6, 'iPhone 15', 20, 800,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/a8/c7/16/1540-2/tsp20260428173815/Apple-iPhone-15-6-1-128-Go-bleu-Reconditionne-avec-Batterie-neuve.jpg#88c92110-066a-4b38-b6cc-7875a9b0ce2e', 2),
+
+(7, 'Samsung S24', 18, 900,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/a6/f6/5a/22738598/1540-1/tsp20260319135101/Smartphone-Samsung-Galaxy-S24-6-2-5G-Nano-SIM-256-Go-Noir.jpg', 2),
+
+(8, 'Google Pixel 11', 12, 800,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/24/34/c6/29766692/1540-1/tsp20260813091724/Smartphone-Google-Pixel-11-6-3-OLED-5G-Double-SIM-256-Go-Noir-Volcanique.jpg', 2),
+
+(9, 'Casque Sony WH-1000XM5', 22, 350,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/d9/63/25/19227609/1540-1/tsp20260612111322/Casque-audio-arceau-sans-fil-Sony-WH1000XM5-noir-a-reduction-de-bruit.jpg', 3),
+
+(10, 'AirPods Pro 2', 35, 280,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/0a/e4/06/17228810/1540-1/tsp20260620100141/Apple-AirPods-Pro-2eme-generation-Blanc-avec-boitier-de-charge-MagSafe-Lightning-Ecouteurs-sans-fil-True-Wirele.jpg', 3),
+
+(11, 'Enceinte JBL Flip 6', 28, 130,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/d2/2d/06/17182162/1540-1/tsp20260523184546/Enceinte-portable-etanche-sans-fil-Bluetooth-JBL-Flip-6-Bleu.jpg', 3),
+
+(12, 'PlayStation 5', 10, 550,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/2d/8d/b7/28806445/1540-1/tsp20260730103933/Console-Sony-PS5-Slim-Edition-Standard-Blanc-et-Noir.jpg', 4),
+
+(13, 'Manette Xbox Wireless Controller', 25, 65,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/ff/be/33/20168447/1540-1/tsp20260530085138/Manette-sans-fil-Microsoft-Xbox-Elite-Series-2-Core-Blanc.jpg', 4),
+
+(14, 'Nintendo Switch OLED', 14, 350,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/91/ea/f6/16181905/1540-1/tsp20260619170440/Nintendo-Switch-modele-OLED-avec-station-d-accueil-et-manettes-Joy-Con-blanches.jpg', 4),
+
+(15, 'Casque Gaming HyperX Cloud II', 30, 90,
+ 'https://static.fnac-static.com/multimedia/Images/60/36/9D/14/21615456-1505-1540-1/tsp20260527082658/Casque-PC-sans-fil-gaming-HyperX-Cloud-Stinger-2-Noir.jpg', 4);
+
+
+
+
