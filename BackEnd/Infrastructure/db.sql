@@ -144,13 +144,13 @@ VALUES
  'https://example.com/lenovo-ideapad.jpg', 1),
 
 (2, 'MacBook Air M3', 15, 1300,
- 'https://example.com/macbook-air-m3.jpg', 1),
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/72/85/63/23299442/1540-1/tsp20260218220918/Apple-MacBook-Air-13-6-512Go-D-16-Go-RAM-Puce-M3-CPU-8-coeurs-GPU-10-coeurs-Minuit.jpg', 1),
 
-(3, 'Écran Samsung 27 pouces', 30, 250,
- 'https://example.com/samsung-monitor.jpg', 1),
+(3, 'Samsung Galaxy Tab S10 FE', 30, 750,
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/82/57/ab/28006274/1540-1/tsp20260619155057/Samsung-Galaxy-Tab-S10-FE-tablette-android-ecran-10-9-pouces-27-7-cm-WiFi-5-Bluetooth-5-3-RAM-12-Go-stockage-256-Go-camera-principale-13-mpx-batterie-8000-mAh-gris.jpg', 1),
 
 (4, 'Clavier mécanique Logitech G413', 40, 90,
- 'https://example.com/logitech-g413.jpg', 5),
+ 'https://static.fnac-static.com/multimedia/Images/FR/MDM/73/93/41/21074803/1540-1/tsp20260220031329/Clavier-Gaming-filaire-Azerty-Logitech-G-G413-SE-Noir.jpg', 5),
 
 (5, 'Souris Logitech G502', 50, 80,
  'https://static.fnac-static.com/multimedia/Images/FR/MDM/4e/2a/30/19933774/1505-1/tsp20260601032040/Souris-Gaming-Sans-Fil-Logitech-G502-X-Lightspeed-pour-PC-ou-Mac-Noir.jpg', 5),
