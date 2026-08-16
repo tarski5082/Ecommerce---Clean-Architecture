@@ -138,7 +138,7 @@ INSERT INTO Categorie (Id, Nom) VALUES
 -- =====================================================
 
 INSERT INTO Produit
-    (Id, Nom, Inventaire, PrixUnitaire, ImageUrl, IdCategorie)
+    (Nom, Inventaire, PrixUnitaire, ImageUrl, IdCategorie)
 VALUES
 ('Lenovo Yoga Slim 7', 25, 750,
  'https://static.fnac-static.com/multimedia/Images/FR/MDM/fc/f5/a6/27719164/3756-1.jpg', 1),
