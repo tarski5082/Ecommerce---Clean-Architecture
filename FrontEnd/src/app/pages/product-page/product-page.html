@@ -1,7 +1,16 @@
-<div>
+<div class="products-grid">
     @for(product of productList();track product){
-        <img [src]="product.imageUrl" [alt]="product.nom">
-        <p>{{product.nom}}</p>
-        <p>{{product.prixUnitaire}}</p>
+        <div class="product-card">
+            <img [src]="product.imageUrl" [alt]="product.nom" class="product-image">
+            <div class="product-info">
+                <div class="product-name">{{product.nom}}</div>
+            </div>
+            <div class="product-footer">
+                <div class="product-price">{{product.prixUnitaire}}</div>
+                <button class="detail">Detail</button>
+            </div>
+            
+        </div>
+        
     }
 </div>
