@@ -1,1 +1,7 @@
-<p>product-page works!</p>
+<div>
+    @for(product of productList();track product){
+        <img [src]="product.imageUrl" [alt]="product.nom">
+        <p>{{product.nom}}</p>
+        <p>{{product.prixUnitaire}}</p>
+    }
+</div>
