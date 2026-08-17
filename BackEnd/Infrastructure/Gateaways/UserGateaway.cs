@@ -61,6 +61,21 @@ public  class UserGateaway : IUserGateway
             Prenom=infraUser.Prenom
         };
     }
+    public Core.Models.User? GetUserById(Guid id)
+    {
+        var infraUser = _userRepository.GetUserById(id);
+        if (infraUser == null) return null;
+        return new Core.Models.User
+        {
+            Id = infraUser.Id,
+            Username = infraUser.Username,
+            IsAdmin = infraUser.IsAdmin,
+            Nom = infraUser.Nom,
+            Prenom=infraUser.Prenom,
+            IdFacturation=infraUser.IdFacturation,
+            IdLivraison = infraUser.IdLivraison
+        };
+    }
 
     
 

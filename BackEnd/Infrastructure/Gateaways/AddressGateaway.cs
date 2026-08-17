@@ -13,14 +13,7 @@ public class AddressGateaway:IAddressGateaway
     }
      public bool UpdateAddress(Core.Models.Address address)
     {
-       var _address = new Address
-       {
-           Id=address.Id,
-           Rue=address.Rue,
-           Numero=address.Numero,
-           Boite=address.Boite,
-           IdLocalite=address.Localite.Id
-       };
+       var _address = Address.ToInfraModel(address);
        return _addressRepository.UpdateAddress(_address);
     }
     public Core.Models.Address? GetAddressById(int id)
@@ -32,7 +25,8 @@ public class AddressGateaway:IAddressGateaway
             Id=id,
             Rue = address.Rue,
             Numero = address.Numero,
-            Boite = address.Boite
+            Boite = address.Boite,
+            IdLocalite=address.IdLocalite
         };
     }
    
@@ -40,15 +34,8 @@ public class AddressGateaway:IAddressGateaway
     public int AddAdress(Core.Models.Address address)
     {
     
-        var _address = new Address
-       {
-           Id=address.Id,
-           Rue=address.Rue,
-           Numero=address.Numero,
-           Boite=address.Boite,
-           IdLocalite=address.Localite.Id
-       };
-        return _addressRepository.AddAdress(_address);
+        var _address = Address.ToInfraModel(address);
+        return _addressRepository.AddAddress(_address);
     }
     public Core.Models.Address? GetAddress(int id)
     {
@@ -59,19 +46,14 @@ public class AddressGateaway:IAddressGateaway
             Id = _address.Id,
             Rue = _address.Rue,
             Numero = _address.Numero,
-            Boite = _address.Boite
+            Boite = _address.Boite,
+            IdLocalite=_address.IdLocalite
         };
     }
 
     public int? GetAddressId(Core.Models.Address address)
     {
-        var _address = new Address
-        {
-            Rue=address.Rue,
-            Numero=address.Numero,
-            Boite=address.Boite,
-            IdLocalite=address.Localite.Id
-        };
+        var _address = Address.ToInfraModel(address);
         return _addressRepository.GetAddressId(_address);
     }
     

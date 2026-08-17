@@ -80,6 +80,9 @@ CREATE TABLE Utilisateur (
     FOREIGN KEY (IdFacturation) REFERENCES Adresse(Id),
     FOREIGN KEY (IdLivraison) REFERENCES Adresse(Id)
 );
+INSERT INTO Utilisateur(Username,PasswordHash,IsAdmin)
+VALUES ('merel','$2a$11$azkUtuV3zlE4bglXIBU2ZeplB2JXznTqFMw05sXmFqigbFgqYL70S',TRUE),
+        ('socrate','$2a$11$bJiDNtSfWkmhYbqft9CGx.F/LFLI7Cbcn.H9ls5v9yPFn3K9mqH52',FALSE);
 
 -- =====================================================
 -- Panier

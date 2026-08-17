@@ -1,0 +1,46 @@
+
+<div class="product-page">
+  <div class="product-card">
+
+    <div class="product-image">
+      <img
+        [src]="product()?.imageUrl"
+        [alt]="product()?.nom"
+      />
+    </div>
+
+    <div class="product-info">
+
+      <span class="category">
+        {{ product()?.categorie }}
+      </span>
+
+      <h1>
+        {{ product()?.nom }}
+      </h1>
+
+      <p class="description">
+        Découvrez ce produit dans notre boutique.
+      </p>
+
+      <div class="price">
+        {{ product()?.prixUnitaire}}
+      </div>
+
+      <div class="stock">
+        <span class="stock-dot"></span>
+
+        {{ product()?.inventaire }} produits disponibles
+      </div>
+
+      <button class="add-button">
+        Ajouter au panier
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+{{id()}}

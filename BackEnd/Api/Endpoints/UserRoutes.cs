@@ -12,6 +12,21 @@ namespace Api.EndPoints;
 
 public static class UserRoutes
 {
+    public static Guid GetUserId(HttpContext httpContext)
+    {
+        var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+        if(userIdClaim is null)
+        {
+             throw new UnauthorizedAccessException("User is not authenticated.");
+        }
+        if (!Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            throw new ArgumentException("Invalid user identifier format in token.");
+        }
+
+        return userId;
+
+    }
     public static WebApplication AddUserRoutes(this WebApplication app)
     {
         var group = app.MapGroup("user")
@@ -69,11 +84,16 @@ public static class UserRoutes
 
 
 
-        group.MapGet("",(IUserUseCases userUseCase) =>
+        group.MapGet("/users",(IUserUseCases userUseCase) =>
         {
            var users = userUseCase.GetAllUsers(); 
            return Results.Ok(users);
-        });
+        }).RequireAuthorization("AdminOnly")
+        .Produces(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status403Forbidden)
+        .Produces(StatusCodes.Status500InternalServerError);
 
 
         group.MapPost("/register", ([FromBody] RegisterRequest request, IUserUseCases userUseCases) =>
@@ -87,9 +107,35 @@ public static class UserRoutes
         .Produces(StatusCodes.Status401Unauthorized)
         .Produces(StatusCodes.Status500InternalServerError);
 
-        
-        
-       
+        group.MapGet("",(IUserUseCases userUseCases,HttpContext httpContext) =>
+        {
+            var userId = GetUserId(httpContext);
+            var profil = userUseCases.GetProfile(userId);
+            return Results.Ok(profil);
+        }).WithName("Profil")
+        .Produces<object>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status500InternalServerError);
+        group.MapPut("/livraison",([FromBody]AddressRequest request,IUserUseCases userUseCases,HttpContext httpContext) =>
+        {
+            var userId = GetUserId(httpContext);
+            userUseCases.UpdateLivraison(request,userId);
+            Results.Ok(new { message = "Delivery address updated successfully." });
+        }).Produces<object>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status500InternalServerError);
+
+        group.MapPut("/facturation",([FromBody]AddressRequest request,IUserUseCases userUseCases,HttpContext httpContext) =>
+        {
+            var userId = GetUserId(httpContext);
+            userUseCases.UpdateFacturation(request,userId);
+            Results.Ok(new { message = "Billing address updated successfully." });
+        }).Produces<object>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized)
+        .Produces(StatusCodes.Status500InternalServerError);          
         return app;
     }
 }

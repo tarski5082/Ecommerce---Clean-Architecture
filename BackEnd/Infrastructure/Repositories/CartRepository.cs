@@ -148,6 +148,16 @@ public class CartRepository(IConfiguration configuration) : ICartRepository
                 throw;
             }
     }
+    public IEnumerable<CartItem> getCartItems(Guid cartId)
+    {
+        const string sql = @"SELECT * FROM Article WHERE PanierId=@PanierId;";
+        
+        using(var connection = CreateConnection())
+        {
+            connection.Open();
+            return connection.Query<CartItem>(sql,new {PanierId=cartId}).ToList();
+        }
+    }
 
     
 

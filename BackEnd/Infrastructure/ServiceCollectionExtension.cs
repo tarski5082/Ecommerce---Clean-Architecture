@@ -20,6 +20,9 @@ public static class ServiceCollectionExtension
         services.AddTransient<IProductGateway,ProductGateway>();
         services.AddTransient<ICartRepository,CartRepository>();
         services.AddTransient<ICartGateway,CartGateway>();
+        services.AddTransient<ICategoryRepository,CategoryRepository>();
+        services.AddTransient<ICategoryGateway,CategoryGateway>();
+        
         return services;
     }
 }

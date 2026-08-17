@@ -9,5 +9,5 @@ public interface IUserGateway
     User? GetUserByUsername(string username);
     void AddUser(string username, string passwordHash);
     IEnumerable<User> GetAllUsers();
-    
+    User? GetUserById(Guid id);
 }

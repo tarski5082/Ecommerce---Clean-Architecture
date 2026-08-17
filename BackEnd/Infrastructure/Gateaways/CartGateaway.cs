@@ -28,6 +28,7 @@ public class CartGateway:ICartGateway
     public Core.Models.Cart GetCart(Guid cartId)
     {
         var cart = _cartRepository.GetCart(cartId);
+        if(cart is null) throw new Exception("Le panier n'existe pas pour l'identifiant fournie");
         return cart.ToCoreModel();
     }
     public void CreateCart(Guid userId)
@@ -74,5 +75,23 @@ public class CartGateway:ICartGateway
     public Guid GetId(Guid cartId)
     {
        return _cartRepository.GetId(cartId);
+    }
+
+    public IEnumerable<Core.Models.CartItem> GetCartItems(Guid cartId){
+        var _cartItem = _cartRepository.getCartItems(cartId);
+        var modelCartItem = new List<Core.Models.CartItem>();
+        foreach(var item in _cartItem)
+        {
+            modelCartItem.Add(new Core.Models.CartItem
+                {
+                    Id=item.Id,
+                    ProduitId=item.ProduitId,
+                    Quantite=item.Quantite,
+                    PanierId=item.PanierId
+                });
+                
+            
+        }
+        return modelCartItem;
     }
 }

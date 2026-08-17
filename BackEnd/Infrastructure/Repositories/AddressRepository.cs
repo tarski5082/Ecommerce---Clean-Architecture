@@ -14,22 +14,33 @@ public class AddressRepository(IConfiguration configuration) : IAddressRepositor
                             ?? throw new ArgumentNullException(nameof(configuration), "Database connection string 'DefaultConnection' not found.");
 
     private IDbConnection CreateConnection() => new MySqlConnection(_connectionString);
-    public int AddAdress(Address adress)
-    {
-        const string sql = @"
-            INSERT INTO Adresse (Rue, Numero, Boite)
-            VALUES (@Rue, @Numero, @Boite);
-
-            SELECT LAST_INSERT_ID();
-            ";
-
-            using(var connection = CreateConnection())
-        {
-            connection.Open();
-            return connection.QuerySingle<int>(sql,adress);
-        }
-    }
     
+    public int AddAddress(Address address)
+    {
+        const string exist = @"SELECT Id FROM Adresse WHERE 
+                            Rue = @Rue AND 
+                            Numero = @Numero AND 
+                            (Boite = @Boite OR (Boite IS NULL AND @Boite IS NULL)) AND
+                            Id=@IdLocalite;";
+
+        const string sql = @"
+            INSERT INTO Adresse (Rue, Numero, Boite,IdLocalite)
+            VALUES (@Rue, @Numero, @Boite,@IdLocalite);
+
+            SELECT LAST_INSERT_ID();";
+
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                var existingId = connection.QuerySingleOrDefault<int?>(exist, address);
+                if (existingId.HasValue && existingId.Value > 0)
+                {
+                    return existingId.Value;
+                }
+
+                return connection.QuerySingle<int>(sql, address);
+            }
+    }
 
     public Address? GetAddressById(int id)
     {

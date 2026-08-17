@@ -4,7 +4,7 @@ public interface IAddressRepository
 {
     Address? GetAddressById(int id);
     int? GetAddressId(Address address);
-    int AddAdress(Address address); 
+    int AddAddress(Address address); 
     bool UpdateAddress(Address address);
 
 }

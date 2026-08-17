@@ -11,6 +11,6 @@ public class User
 
     public int? IdFacturation{get;set;}
     public int? IdLivraison{get;set;}
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 }

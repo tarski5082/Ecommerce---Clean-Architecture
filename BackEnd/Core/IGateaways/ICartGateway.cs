@@ -4,6 +4,7 @@ namespace Core.IGateways;
 
 public interface ICartGateway
 {
+    public IEnumerable<Core.Models.CartItem> GetCartItems(Guid cartId);
     IEnumerable<Cart> GetAllCarts(Guid UserId);
     Cart? GetCart(Guid CartId);
     void CreateCart(Guid UserId);

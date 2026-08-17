@@ -69,7 +69,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.AddUserRoutes();
-app.AddProfileRoutes();
 app.AddProductRoutes();
 app.AddCartRoutes();
 app.Run();

@@ -6,10 +6,11 @@ namespace Core.UseCases;
 public class ProductUseCases:IProductUseCases
 {
     private readonly IProductGateway _productGateway;
-
-    public ProductUseCases(IProductGateway productGateway)
+    private readonly ICategoryGateway _categorieGateway;
+    public ProductUseCases(IProductGateway productGateway,ICategoryGateway categorieGateway)
     {
         _productGateway=productGateway;
+        _categorieGateway=categorieGateway;
     }
 
 
@@ -31,5 +32,12 @@ public class ProductUseCases:IProductUseCases
     public void DeleteProduct(int id)
     {
         _productGateway.DeleteProduct(id);
+    }
+
+    public string getGategorie(int id)
+    {
+        var cat = _categorieGateway.GetCategory(id).Nom;
+        if(cat==null || id==0) return "";
+        return cat;
     }
 }

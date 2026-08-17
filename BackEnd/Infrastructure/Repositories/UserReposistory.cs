@@ -15,7 +15,7 @@ public class UserRepository(IConfiguration configuration) : IUserRepository
     private IDbConnection CreateConnection() => new MySqlConnection(_connectionString);
     public User? GetUserByUsername(string username)
     {
-        const string sql = "SELECT Id, Username, PasswordHash, IsAdmin, Nom, Prenom FROM Utilisateur WHERE Username = @Username;";
+        const string sql = "SELECT Id, Username, PasswordHash, IsAdmin, Nom, Prenom,IdFacturation,IdLivraison FROM Utilisateur WHERE Username = @Username;";
         using var connection = CreateConnection();
         return connection.QuerySingleOrDefault<User?>(sql, new { Username = username });
     }
@@ -59,5 +59,11 @@ public class UserRepository(IConfiguration configuration) : IUserRepository
             return affectedRaw>0;
         }
         
+    }
+    public User? GetUserById(Guid Id)
+    {
+        const string sql = "SELECT Id, Username, PasswordHash, IsAdmin, Nom, Prenom,IdFacturation,IdLivraison FROM Utilisateur WHERE Id = @Id;";
+        using var connection = CreateConnection();
+        return connection.QuerySingleOrDefault<User?>(sql, new { Id = Id });
     }
 }

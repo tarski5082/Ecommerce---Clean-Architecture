@@ -2,16 +2,18 @@ namespace Core.UseCases;
 
 using Core.IGateways;
 using Core.Models;
+using Core.Models.Response;
 using Core.UseCases.Abstractions;
 
 public class CartUseCases:ICartUseCases
 {
     private readonly ICartGateway _cartGateway;
-    
+    private readonly IProductGateway _productgateway;
 
-    public CartUseCases(ICartGateway cartGateway)
+    public CartUseCases(ICartGateway cartGateway,IProductGateway productGateway)
     {
         _cartGateway=cartGateway;
+        _productgateway=productGateway;
     }
     public void CreateCart(Guid UserId)
     {
@@ -87,6 +89,21 @@ public class CartUseCases:ICartUseCases
         if(cart is null) throw new Exception("Aucun panier disponible mettre a supprimer");
 
         _cartGateway.Delete(cart.Id);
+    }
+
+    public CartResponse GetAllCartItem(Guid cartId)
+    {
+        var items = _cartGateway.GetCartItems(cartId);
+        var cartItems = new List<ProductResponse>();
+        foreach(var item in items)
+        {
+            var product =_productgateway.GetProductById(item.ProduitId);
+            cartItems.Add(new ProductResponse(product));
+        }
+        var cartResponse = new CartResponse(cartId,cartItems);
+
+        return cartResponse;
+
     }
 
 }

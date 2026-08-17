@@ -7,4 +7,5 @@ public interface IProductUseCases
     void AddProduct(Product product);
     void UpdateProduct(Product product);
     void DeleteProduct(int id);
+    string getGategorie(int id);
 }

@@ -4,6 +4,7 @@ using Infrastructure.Models;
 
 public interface ICartRepository
 {
+    IEnumerable<CartItem> getCartItems(Guid cartId);
     IEnumerable<Cart> GetAllCarts(Guid UserId);
     Cart? GetCart(Guid Id);
     void CreateCart(Guid Id);

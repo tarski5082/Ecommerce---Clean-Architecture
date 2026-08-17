@@ -2,6 +2,8 @@ namespace Infrastructure.Gateways;
 using Infrastructure.Repositories.Abstractions;
 using Infrastructure.Models;
 using Core.IGateways;
+using Core.Models.Request;
+
 public class LocalityGateaway:ILocalityGateaway
 {
     private readonly ILocalityRepository _localityRepository;
@@ -11,7 +13,7 @@ public class LocalityGateaway:ILocalityGateaway
         _localityRepository=localityRepository;
     }
 
-    public int? AddLocality(Core.Models.Locality localite)
+    public int AddLocality(Core.Models.Locality localite)
     {
         return _localityRepository.AddLocality(new Locality
         {
@@ -49,5 +51,10 @@ public class LocalityGateaway:ILocalityGateaway
             Ville=localite.Ville,
             Province=localite.Province
         });
+    }
+
+    public int? GetLocalityId(LocalityRequest request)
+    {
+        return _localityRepository.GetLocalityId(request);
     }
 }

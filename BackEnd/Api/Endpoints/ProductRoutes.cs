@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Core.UseCases.Abstractions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Reflection.Metadata.Ecma335;
+using Core.Models.Response;
 
 namespace Api.EndPoints;
 
@@ -35,7 +36,13 @@ public static class ProductRoutes
         group.MapGet("/{id}",(int id,IProductUseCases productUseCase) =>
         {
             var products = productUseCase.GetProductById(id);
-            return Results.Ok(products);
+            var catId= products.IdCategorie;
+            var categorie ="";
+            if (catId != null)
+            {
+                categorie = productUseCase.getGategorie(catId.GetValueOrDefault());
+            }
+            return Results.Ok(new ProductResponse(products,categorie));
         }).AllowAnonymous()
         .WithName("Product")
         .Produces<object>(StatusCodes.Status200OK)
