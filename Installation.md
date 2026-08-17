@@ -25,7 +25,9 @@ cd Ecommerce---Clean-Architecture
 ```bash
 cd BackEnd
 dotnet restore
+```
 
+```bash
 cd Infrastructure
 mysql -u root -p < db.sql
 ```
