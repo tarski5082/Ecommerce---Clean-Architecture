@@ -24,7 +24,7 @@ git clone https://github.com/tarski5082/Ecommerce---Clean-Architecture
 cd Ecommerce---Clean-Architecture
 ```
 
-## Installer les dependances et la base de donnees
+## Installer les dépendances et la base de données
 
 ```bash
 cd BackEnd
@@ -39,13 +39,14 @@ cd Infrastructure
 ```bash
 mysql -u root -p < db.sql
 ```
-Entrer le mot de passe de votre base de donnees
+Entrer le mot de passe de votre base de données
 
 Ouvrer le fichier appsettings.Development.json
 
-Dans la chaine de caractere a cote de DefaultConnection: "Server=localhost;Database=store;Uid=root;Pwd=root;"
+Dans la chaine de caractère a cote de DefaultConnection: "Server=localhost;Database=store;Uid=root;Pwd=root;"
 remplacer root a cote de Pwd par le mot de passe de votre root dans votre base de donnes.
 
+Faite de même avec le fichier appSettings.json
 
 
 ```bash
